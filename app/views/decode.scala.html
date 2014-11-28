@@ -1,0 +1,41 @@
+@(key: Option[String], message: Option[String], cipher: Option[String])
+
+@main("Decode") {
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Enter key and cipher text to decode</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" action="/decode" method="post">
+            <div class="form-group">
+                <label for="key">Key</label>
+                <input type="text" name="key" class="form-control" id="key" placeholder="Enter key in HEX format" value="@key.orNull">
+            </div>
+            <div class="form-group">
+                <label for="cipher">Cipher (HEX)</label>
+                <textarea class="form-control" name="cipher" rows="8" id="cipher">@cipher.orNull</textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Decode</button>
+        </form>
+    </div>
+</div>
+@if(message.isDefined) {
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Decoded result</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" action="/" method="post" id="encodeForm">
+            <div class="form-group">
+                <label for="message">Message text</label>
+                <textarea class="form-control" name="message" rows="8" id="message">@message.orNull</textarea>
+            </div>
+            <input type="hidden" id="keyDec" name="key">
+            <button type="button" class="btn btn-default" id="decode" onclick="$('#keyDec').val($('#key').val()); $('#encodeForm').submit();">Encode</button>
+        </form>
+    </div>
+</div>
+}
+
+}
