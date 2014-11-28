@@ -1,7 +1,39 @@
-@(message: String)
+@(key: Option[String], message: Option[String], cipher: Option[String])
 
-@main("Welcome to Play") {
+@main("Encode") {
 
-    @play20.welcome(message)
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Enter Key and Message to encode</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" action="/" method="post">
+            <div class="form-group">
+                <label for="key">Key</label>
+                <input type="text" name="key" class="form-control" id="key" placeholder="Enter key in HEX format" value="@key.orNull">
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea class="form-control" name="message" rows="8" id="message">@message.orNull</textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Encode</button>
+        </form>
+    </div>
+</div>
+@if(cipher.isDefined) {
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Encoded result</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form">
+            <div class="form-group">
+                <label for="cipher">Cipher text</label>
+                <textarea class="form-control" name="cipher" rows="8" id="cipher">@cipher.orNull</textarea>
+            </div>
+        </form>
+    </div>
+</div>
+}
 
 }
