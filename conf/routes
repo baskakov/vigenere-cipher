@@ -7,6 +7,8 @@ GET     /                           controllers.Application.index
 POST    /                           controllers.Application.index
 GET     /decode                     controllers.Application.decode
 POST    /decode                     controllers.Application.decode
+GET     /break                      controllers.Application.break
+POST    /break                      controllers.Application.break
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
