@@ -1,4 +1,4 @@
-@(key: Option[String], message: Option[String], cipher: Option[String])
+@(key: Option[String], message: Option[String], cipher: Option[String], info: List[(String, String)])
 
 @main("Break") {
 
@@ -16,13 +16,19 @@
         </form>
     </div>
 </div>
-@if(message.isDefined) {
+@if(key.isDefined || info.nonEmpty) {
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Decoded result</h3>
     </div>
     <div class="panel-body">
         <form role="form" id="encodeForm">
+            @for((name, text) <- info) {
+            <div class="form-group">
+                <label for="keyLength">@name</label>
+                <pre>@text</pre>
+            </div>
+            }
             <div class="form-group">
                 <label for="key">Key</label>
                 <input type="text" name="key" class="form-control" id="key" value="@key.orNull">

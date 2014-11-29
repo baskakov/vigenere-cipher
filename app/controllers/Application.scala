@@ -16,7 +16,7 @@ object Application extends Controller {
     def decode = (key, key.flatMap(k => cipher.map(c => VigenereCipher.decode(k,c))), cipher)
     def break = {
       val result = cipher.flatMap(VigenereCipher.break _)
-      (result.map(_.keyHex),result.map(_.messageText),cipher)
+      (result.map(_.keyHex),result.map(_.messageText),cipher,result.map(_.info).getOrElse(Nil))
     }
   }
 
