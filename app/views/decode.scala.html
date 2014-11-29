@@ -9,7 +9,7 @@
     <div class="panel-body">
         <form role="form" action="/decode" method="post">
             <div class="form-group">
-                <label for="key">Key</label>
+                <label for="key">Key (HEX)</label>
                 <input type="text" name="key" class="form-control" id="key" placeholder="Enter key in HEX format" value="@key.orNull">
             </div>
             <div class="form-group">
@@ -28,7 +28,7 @@
     <div class="panel-body">
         <form role="form" action="/" method="post" id="encodeForm">
             <div class="form-group">
-                <label for="message">Message text</label>
+                <label for="message">Message (TEXT)</label>
                 <textarea class="form-control" name="message" rows="8" id="message">@message.orNull</textarea>
             </div>
             <input type="hidden" id="keyDec" name="key">
