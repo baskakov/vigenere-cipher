@@ -15,7 +15,23 @@ object VigenereCipher extends Vigenere {
 
   def break(cipherTextHex: String): Option[BrokenCipher] = {
     //TODO
+
+
+    //val (keyLength: Int, frequences: Map[Int, Int]) = ???
     None
+  }
+
+  private def charFrequency(keyLength: Int, asciiCipher: Iterable[Int]): List[Map[Int,Int]] = {
+    val chars = asciiCipher.grouped(keyLength)
+    val res = chars.foldLeft(0 until keyLength map(_ => Map[Int,Int]()))({
+      case (freqList,b) => b.zipWithIndex.foldLeft(freqList)({
+        case (freqListAcc,(asciiCharIndex,i)) =>
+          val currentMap = freqListAcc(i)
+          val newMap = currentMap + (asciiCharIndex -> (currentMap.getOrElse(asciiCharIndex, 0)+1))
+          freqListAcc.updated(i, newMap)
+      })
+    })
+    res.toList
   }
 }
 
@@ -29,7 +45,9 @@ object StringHex {
       (xs ++ xor, i+1)
   })._1.toUpperCase
   
-  def textToHex: String => String = _.map(c => Integer.toHexString(c.toInt)).mkString("")
+  def textToHex: String => String = _.map(c => Integer.toHexString(c.toInt)).mkString("").toUpperCase
 
-  def hexToText: String => String = _.grouped(2).map(twoBytes => Integer.parseInt(twoBytes,16).toChar.toString).mkString("")
+  def hexToText: String => String = hexToAscii.andThen(_.map(_.toChar.toString).mkString(""))
+
+  def hexToAscii: String => Iterator[Int] = _.grouped(2).map(twoBytes => Integer.parseInt(twoBytes, 16))
 }
