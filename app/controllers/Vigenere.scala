@@ -19,7 +19,13 @@ object VigenereCipher extends Vigenere {
     val keyLenFinder = KeyLengthFinder(asciiCipher)
     val disp = keyLenFinder.dispersion
     val dispStr = disp.map(k => k.length +":"+k.dispersion.toString).mkString("\r\n")
-    Some(BrokenCipher("","",List(
+
+
+    val key = asciiToHex(keyLenFinder.byFrequencyLetters.map(_._2.headOption.getOrElse(0)))
+
+    val message = decode(key, cipherTextHex)
+
+    Some(BrokenCipher(key,message,List(
       ("Looking up to key size" -> keyLenFinder.maxKey.toString),
       ("Dispersion" -> dispStr),
       ("Key length" -> keyLenFinder.bestKey.toString),
@@ -94,7 +100,7 @@ case class KeyLengthFinder(asciiCipher: Iterable[Int]) {
     val available = availableLetter(keyIndex)
     val freq = frequences.find(f => f.length==bestKey).get.frequency(keyIndex)
     val topFreq = freq.toList.sortBy(_._2).reverse.map(_._1).take(5)
-    available.filter(avChar => topFreq.exists(tops => highestFreq.contains(tops ^ avChar)))
+    available.map(avChar => avChar -> topFreq.filter(tops => highestFreq.contains(tops ^ avChar)).size).filterNot(_._2 == 0).sortBy(_._2).reverse.map(_._1)
   }
 
   def decartKeys(depth: Int = 0, acc:List[List[Int]] = List(List())): List[List[Int]] = {
